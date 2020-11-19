@@ -16,13 +16,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        Fragment fragment = MainFragment.newInstance("test1","test2");
-        fragmentTransaction.add(R.id.mainActivity,fragment);
-        fragmentTransaction.commit();
-
         HttpHandler.INSTANCE.initHttpClient();
 
     }
