@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import okhttp3.OkHttpClient;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -20,5 +22,8 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment = MainFragment.newInstance("test1","test2");
         fragmentTransaction.add(R.id.mainActivity,fragment);
         fragmentTransaction.commit();
+
+        HttpHandler.INSTANCE.initHttpClient();
+
     }
 }
