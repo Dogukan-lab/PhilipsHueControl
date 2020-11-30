@@ -9,5 +9,18 @@
         android:id="@+id/mainFragment"
         android:name="com.example.philipshueapk.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_hueFragment"
+            app:destination="@id/hueFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/hueFragment"
+        android:name="com.example.philipshueapk.HueFragment"
+        android:label="fragment_hue"
+        tools:layout="@layout/fragment_hue" >
+        <action
+            android:id="@+id/action_hueFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 </navigation>
