@@ -12,6 +12,9 @@ import android.os.Bundle;
 
 import com.example.philipshueapk.HttpHandler;
 import com.example.philipshueapk.R;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import okhttp3.OkHttpClient;
 
@@ -22,8 +25,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        HttpHandler.INSTANCE.initHttpClient();
-        HttpHandler.INSTANCE.getAllLights();
+        HttpHandler.INSTANCE.init();
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode objectNode = mapper.createObjectNode();
+        objectNode.put("hue",50000);
+        objectNode.put("on",false);
+        objectNode.put("bri",200);
+        try {
+            HttpHandler.INSTANCE.setLampState(1,mapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectNode));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
 
         // use without navcontroller: https://stackoverflow.com/questions/53902494/navigation-component-cannot-find-navcontroller
         // can also be done in onclick  Navigation.findNavController(view).navigate(action);
