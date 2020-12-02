@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.philipshueapk.MainFragment"
+        android:name="com.example.philipshueapk.ui.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/hueFragment"
-        android:name="com.example.philipshueapk.HueFragment"
+        android:name="com.example.philipshueapk.ui.HueFragment"
         android:label="fragment_hue"
         tools:layout="@layout/fragment_hue" >
         <action

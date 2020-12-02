@@ -1,5 +1,8 @@
 package com.example.philipshueapk;
 
+import android.os.AsyncTask;
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -12,13 +15,32 @@ import okhttp3.Response;
 public enum HttpHandler {
     INSTANCE;
 
+    private static final String TAG = HttpHandler.class.getSimpleName();
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     private OkHttpClient client;
-    private String username = "newDeveloper";
+    private String bridgeUri = "http://10.0.2.2:8000/api/";
+    private String username = "newdeveloper";
+    private String category = "/lights";
 
     public void initHttpClient() {
         client = new OkHttpClient();
+    }
+
+    public void getAllLights() {
+        final String uri = bridgeUri + username + category;
+        Log.d(TAG, "SENDING ALL LIGHTS REQUEST :" + uri);
+        new Thread(() -> {
+            Log.d(TAG, "Starting new thread");
+            Request request = new Request.Builder().url(uri).build();
+
+            try (Response response = client.newCall(request).execute()) {
+                Log.d(TAG, "GOT RESPONSE FROM EMULATOR: " + response.body().string());
+            }catch (IOException e) {
+                Log.d(TAG,"Exception while handling response: " + e.getMessage());
+            }
+        }).start();
+
     }
 
     /**
@@ -61,5 +83,17 @@ public enum HttpHandler {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getBridgeUri() {
+        return bridgeUri;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
