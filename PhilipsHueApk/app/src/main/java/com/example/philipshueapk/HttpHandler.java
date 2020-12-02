@@ -27,19 +27,32 @@ public enum HttpHandler {
     private String category = "/lights";
     private HueInfo hueInfo;
 
+    /**
+     * initializes this singleton and requests all the lights from the bridge
+     */
     public void init() {
         initHttpClient();
         getAllLights();
     }
 
-    public void initHttpClient() {
+    /**
+     * initializes the okhttp client
+     */
+    private void initHttpClient() {
         client = new OkHttpClient();
     }
 
+    /**
+     * returns the HueInfo instance that holds all lamp info of the current bridge
+     * @return the HueInfo instance retrieved in the getAllLights method
+     */
     public HueInfo getHueInfo() {
         return hueInfo;
     }
 
+    /**
+     * gets all lights from the bridge
+     */
     private void getAllLights() {
         final String uri = bridgeUri + username + category;
         Log.d(TAG, "SENDING ALL LIGHTS REQUEST :" + uri);
@@ -72,7 +85,12 @@ public enum HttpHandler {
 
     }
 
-    private void sendRequest(String uri, RequestBody requestBody) {
+    /**
+     * sends a put request to the bridge, to change the state of a lamp
+     * @param uri the uri to send to the api
+     * @param requestBody the requestbody to send. This holds what needs to be changed
+     */
+    public void sendPutRequest(String uri, RequestBody requestBody) {
         Request request = new Request.Builder()
                 .url(uri)
                 .put(requestBody)
@@ -94,6 +112,11 @@ public enum HttpHandler {
         }
     }
 
+    /**
+     * gets the lamp with the specific id
+     * @param id the id of the lamp to get
+     * @return a LampProduct instance with all the info of the lamp
+     */
     public LampProduct getLamp(int id) {
         final String uri = bridgeUri + username + "/lights/" + id;
         Log.d(TAG, "SENDING GET LAMP REQUEST :" + uri);
@@ -123,12 +146,17 @@ public enum HttpHandler {
         return lampProducts[0];
     }
 
+    /**
+     * sets the state of the given lamp with the given json values using the {@link HttpHandler#sendPutRequest(String, RequestBody) sendPutRequest} method
+     * @param id the id of the lamp to set
+     * @param jsonBody the body of the request. This contains what values should be set
+     */
     public void setLampState(int id, String jsonBody) {
         final String uri = bridgeUri + username + "/lights/" + id + "/state";
         RequestBody requestBody = RequestBody.create(jsonBody,JSON);
         Log.d(TAG, "Sending state request for lamp " + id + "\nBody:\n" + jsonBody);
 
-        sendRequest(uri,requestBody);
+        sendPutRequest(uri,requestBody);
     }
 
     public OkHttpClient getClient() {
