@@ -84,7 +84,7 @@ public class LampDetailFragment extends Fragment {
         colorPickerView.subscribe((color,fromUser,propagate) -> {
             String hexColor = String.format("#%06X", (0xFFFFFF & color));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                Log.d(TAG, "Color changed! " + Color.convert(color, ColorSpace.MAX_ID));
+                //Log.d(TAG, "Color changed! " + Color.convert(color, ColorSpace.MAX_ID));
             }
         });
     }

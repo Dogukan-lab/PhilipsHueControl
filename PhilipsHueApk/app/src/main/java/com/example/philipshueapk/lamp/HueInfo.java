@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 })
 /*
 this class is used to hold all lamps that are retrieved when doing a search for lights
+this class is the response from the get lights request
  */
 public class HueInfo {
 

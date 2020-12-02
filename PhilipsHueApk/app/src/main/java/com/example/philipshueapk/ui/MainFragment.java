@@ -4,20 +4,29 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.philipshueapk.DunnyData;
 import com.example.philipshueapk.R;
+
+import java.util.ArrayList;
+import java.util.Objects;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements HueAdapter.OnItemClickListener{
 
     final static String TAG = MainFragment.class.getCanonicalName();
     // TODO: Rename parameter arguments, choose names that match
@@ -28,6 +37,10 @@ public class MainFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView lampRecycler;
+    private View rootView;
+    private ArrayList<DunnyData> testList;
 
     public MainFragment() {
         // Required empty public constructor
@@ -71,8 +84,24 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.d(TAG, "onCreate view main fragment");
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        this.rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        this.lampRecycler = this.rootView.findViewById(R.id.mainRecycler);
+        this.lampRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        this.lampRecycler.setHasFixedSize(true);
 
+        this.testList = new ArrayList<>();
+        testList.add(new DunnyData());
+        testList.add(new DunnyData());
+        testList.add(new DunnyData());
+
+        HueAdapter hueAdapter = new HueAdapter(getContext(), testList, this);
+        this.lampRecycler.setAdapter(hueAdapter);
+        return this.rootView;
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+//        Navigation.findNavController(this.rootView);
+        Log.d(TAG, "OnItemClick: WEJOW ITEM CLICKED!!!! OP POSITIE: " + position);
     }
 }

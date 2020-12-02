@@ -29,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -39,9 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
         // load the user specified lamp names
         DataSaver.loadLampNames(this);
-
-        
-
 
         // use without navcontroller: https://stackoverflow.com/questions/53902494/navigation-component-cannot-find-navcontroller
         // can also be done in onclick  Navigation.findNavController(view).navigate(action);
@@ -72,6 +67,5 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG,"saving lamp names");
         // save the user specified lamp names when the app gets closed or the user changes to another app
         DataSaver.saveLampNames(this);
-
     }
 }
