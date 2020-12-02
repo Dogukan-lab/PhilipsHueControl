@@ -8,22 +8,35 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.app.FragmentManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.philipshueapk.DataSaver;
 import com.example.philipshueapk.HttpHandler;
 import com.example.philipshueapk.R;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity {
+    private final static String TAG = MainActivity.class.getCanonicalName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        HttpHandler.INSTANCE.initHttpClient();
-        HttpHandler.INSTANCE.getAllLights();
+        HttpHandler.INSTANCE.init();
+
+        // load the user specified lamp names
+        DataSaver.loadLampNames(this);
+
 
         // use without navcontroller: https://stackoverflow.com/questions/53902494/navigation-component-cannot-find-navcontroller
         // can also be done in onclick  Navigation.findNavController(view).navigate(action);
@@ -41,6 +54,15 @@ public class MainActivity extends AppCompatActivity {
 //        NavController navController = navHostFragment.getNavController();
 
 
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG,"saving lamp names");
+        // save the user specified lamp names
+        DataSaver.saveLampNames(this);
 
     }
 }

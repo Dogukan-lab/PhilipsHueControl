@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "min",
         "max"
 })
+// denotes the color temperature of a lamp
 public class LampCt {
     @JsonProperty("min")
     private Integer min;

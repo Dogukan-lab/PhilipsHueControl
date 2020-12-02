@@ -4,18 +4,23 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.philipshueapk.R;
 
+import top.defaults.colorpicker.ColorObserver;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HueFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HueFragment extends Fragment {
+public class HueFragment extends Fragment implements ColorObserver {
+
+    private final String TAG = HueFragment.class.getCanonicalName();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +67,10 @@ public class HueFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_hue, container, false);
+    }
+
+    @Override
+    public void onColor(int color, boolean fromUser, boolean shouldPropagate) {
+        Log.d(TAG,"Color changed: " + color);
     }
 }
