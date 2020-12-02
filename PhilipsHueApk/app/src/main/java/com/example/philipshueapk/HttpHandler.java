@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.example.philipshueapk.lamp.HueInfo;
 import com.example.philipshueapk.lamp.LampProduct;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -26,6 +28,7 @@ public enum HttpHandler {
     private String username = "newdeveloper";
     private String category = "/lights";
     private HueInfo hueInfo;
+    private String[] lampNames = new String[3];
 
     /**
      * initializes this singleton and requests all the lights from the bridge
@@ -112,6 +115,23 @@ public enum HttpHandler {
         }
     }
 
+    public void renameLamp(int id, String newName) {
+        final String uri = bridgeUri + username + "/lights/" + id;
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode objectNode = mapper.createObjectNode();
+        objectNode.put("name",newName);
+
+        try {
+            String jsonBody = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectNode);
+            RequestBody requestBody = RequestBody.create(jsonBody,JSON);
+            Log.d(TAG, "Sending rename request: " + jsonBody);
+            lampNames[id-1] = newName;
+            sendPutRequest(uri,requestBody);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * gets the lamp with the specific id
      * @param id the id of the lamp to get
@@ -177,5 +197,9 @@ public enum HttpHandler {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String[] getLampNames() {
+        return lampNames;
     }
 }
