@@ -7,6 +7,7 @@
     tools:context=".ui.MainActivity"
     android:id="@+id/mainActivity">
 
+    <!-- TODO: Maybe add a bottom nav bar for something? -->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
