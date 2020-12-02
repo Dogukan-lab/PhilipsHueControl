@@ -6,16 +6,9 @@
     tools:context=".ui.MainFragment">
 
     <!-- This fragment will show all of the lamps that are currently connected to the hue bridge -->
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/mainConstraint">
-
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/mainRecycler"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
