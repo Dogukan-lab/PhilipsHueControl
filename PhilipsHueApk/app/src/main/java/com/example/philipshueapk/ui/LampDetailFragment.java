@@ -1,7 +1,12 @@
 package com.example.philipshueapk.ui;
 
+import android.graphics.Color;
+import android.graphics.ColorSpace;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -12,13 +17,14 @@ import android.view.ViewGroup;
 import com.example.philipshueapk.R;
 
 import top.defaults.colorpicker.ColorObserver;
+import top.defaults.colorpicker.ColorPickerView;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link LampDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LampDetailFragment extends Fragment implements ColorObserver {
+public class LampDetailFragment extends Fragment {
 
     private final String TAG = LampDetailFragment.class.getCanonicalName();
 
@@ -60,6 +66,8 @@ public class LampDetailFragment extends Fragment implements ColorObserver {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
@@ -70,7 +78,14 @@ public class LampDetailFragment extends Fragment implements ColorObserver {
     }
 
     @Override
-    public void onColor(int color, boolean fromUser, boolean shouldPropagate) {
-        Log.d(TAG,"Color changed: " + color);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ColorPickerView colorPickerView = getView().findViewById(R.id.colorPickerView);
+        colorPickerView.subscribe((color,fromUser,propagate) -> {
+            String hexColor = String.format("#%06X", (0xFFFFFF & color));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Log.d(TAG, "Color changed! " + Color.convert(color, ColorSpace.MAX_ID));
+            }
+        });
     }
 }

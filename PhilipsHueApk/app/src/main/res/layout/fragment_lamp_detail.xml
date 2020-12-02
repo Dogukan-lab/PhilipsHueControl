@@ -33,6 +33,7 @@
             app:layout_constraintTop_toBottomOf="@+id/lamp_detail_image" />
 
         <top.defaults.colorpicker.ColorPickerView
+            android:id="@+id/colorPickerView"
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:layout_marginStart="72dp"
