@@ -24,7 +24,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "swversion"
 })
 
+
+/*
+ * Holds an actual lamp, this class is used to retrieve and change individual lamp settings
+ */
 public class LampProduct {
+
+
     @JsonProperty("state")
     private LampState state;
     @JsonProperty("swupdate")

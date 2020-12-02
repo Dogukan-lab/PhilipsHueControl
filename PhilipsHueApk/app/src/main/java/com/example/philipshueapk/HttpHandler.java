@@ -1,7 +1,10 @@
 package com.example.philipshueapk;
 
-import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.philipshueapk.lamp.HueInfo;
+import com.example.philipshueapk.lamp.LampProduct;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -27,21 +30,67 @@ public enum HttpHandler {
         client = new OkHttpClient();
     }
 
-    public void getAllLights() {
+    public HueInfo getAllLights() {
         final String uri = bridgeUri + username + category;
         Log.d(TAG, "SENDING ALL LIGHTS REQUEST :" + uri);
-        new Thread(() -> {
+        // kinda a workaround, create a final array with size 1, so we can store the received hue info outside the thread
+        final HueInfo[] hueInfos = new HueInfo[1];
+        Thread t = new Thread(() -> {
+
+            HueInfo hueInfo;
             Log.d(TAG, "Starting new thread");
             Request request = new Request.Builder().url(uri).build();
 
             try (Response response = client.newCall(request).execute()) {
                 Log.d(TAG, "GOT RESPONSE FROM EMULATOR: " + response.body().string());
+                hueInfos[0] = new ObjectMapper().readValue(response.body().string(), HueInfo.class);
             }catch (IOException e) {
                 Log.d(TAG,"Exception while handling response: " + e.getMessage());
+                hueInfos[0] = new HueInfo();
             }
-        }).start();
+
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return hueInfos[0];
 
     }
+
+    public LampProduct getLamp(int id) {
+        final String uri = bridgeUri + username + "/lights/" + id;
+        Log.d(TAG, "SENDING ALL LIGHTS REQUEST :" + uri);
+        final LampProduct[] lampProducts = new LampProduct[1];
+        Thread t = new Thread(() -> {
+
+            LampProduct lampProduct;
+            Log.d(TAG, "Starting new thread");
+            Request request = new Request.Builder().url(uri).build();
+
+            try (Response response = client.newCall(request).execute()) {
+                Log.d(TAG, "GOT RESPONSE FROM EMULATOR: " + response.body().string());
+                lampProducts[0] = new ObjectMapper().readValue(response.body().string(), LampProduct.class);
+            }catch (IOException e) {
+                Log.d(TAG,"Exception while handling response: " + e.getMessage());
+                lampProducts[0] = new LampProduct();
+            }
+
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return lampProducts[0];
+    }
+
+
 
     /**
      * sends a request to the API and returns the response

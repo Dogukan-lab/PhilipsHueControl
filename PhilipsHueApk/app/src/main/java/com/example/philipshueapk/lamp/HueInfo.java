@@ -15,7 +15,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "2",
         "3"
 })
-public class Lamp {
+/*
+this class is used to hold all lamps that are retrieved when doing a search for lights
+ */
+public class HueInfo {
 
     @JsonProperty("1")
     private LampProduct product;
