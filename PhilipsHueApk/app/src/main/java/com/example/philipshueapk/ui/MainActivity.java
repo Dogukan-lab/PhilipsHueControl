@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         // load the user specified lamp names
         DataSaver.loadLampNames(this);
 
+        
+
 
         // use without navcontroller: https://stackoverflow.com/questions/53902494/navigation-component-cannot-find-navcontroller
         // can also be done in onclick  Navigation.findNavController(view).navigate(action);
