@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.philipshueapk.R;
 
@@ -62,10 +63,6 @@ public class LampDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
 
     }
@@ -80,6 +77,13 @@ public class LampDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Bundle b = getArguments();
+        String lampName = b.getString("name");
+        TextView nameView = getView().findViewById(R.id.lamp_detail_name);
+        nameView.setText(lampName);
+
+
         ColorPickerView colorPickerView = getView().findViewById(R.id.colorPickerView);
         colorPickerView.subscribe((color,fromUser,propagate) -> {
             String hexColor = String.format("#%06X", (0xFFFFFF & color));

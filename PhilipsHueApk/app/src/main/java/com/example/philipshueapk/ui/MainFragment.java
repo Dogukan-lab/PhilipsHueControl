@@ -99,8 +99,10 @@ public class MainFragment extends Fragment implements HueAdapter.OnItemClickList
     @Override
     public void OnItemClick(int position) {
 //        Navigation.findNavController(this.rootView);
-        
-        Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_lampDetailFragment);
+        Bundle bundle = new Bundle();
+        bundle.putString("name",lamps.get(position).getName());
+
+        Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_lampDetailFragment,bundle);
         Log.d(TAG, "OnItemClick: WEJOW ITEM CLICKED!!!! OP POSITIE: " + position);
     }
 
