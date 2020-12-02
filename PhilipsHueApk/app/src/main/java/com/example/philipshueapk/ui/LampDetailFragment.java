@@ -15,12 +15,12 @@ import top.defaults.colorpicker.ColorObserver;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HueFragment#newInstance} factory method to
+ * Use the {@link LampDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HueFragment extends Fragment implements ColorObserver {
+public class LampDetailFragment extends Fragment implements ColorObserver {
 
-    private final String TAG = HueFragment.class.getCanonicalName();
+    private final String TAG = LampDetailFragment.class.getCanonicalName();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,7 +31,7 @@ public class HueFragment extends Fragment implements ColorObserver {
     private String mParam1;
     private String mParam2;
 
-    public HueFragment() {
+    public LampDetailFragment() {
         // Required empty public constructor
     }
 
@@ -44,8 +44,8 @@ public class HueFragment extends Fragment implements ColorObserver {
      * @return A new instance of fragment HueFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HueFragment newInstance(String param1, String param2) {
-        HueFragment fragment = new HueFragment();
+    public static LampDetailFragment newInstance(String param1, String param2) {
+        LampDetailFragment fragment = new LampDetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -66,7 +66,7 @@ public class HueFragment extends Fragment implements ColorObserver {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_hue, container, false);
+        return inflater.inflate(R.layout.fragment_lamp_detail, container, false);
     }
 
     @Override

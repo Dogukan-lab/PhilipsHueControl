@@ -11,16 +11,15 @@
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
-            android:id="@+id/action_mainFragment_to_hueFragment"
-            app:destination="@id/hueFragment" />
+            android:id="@+id/action_mainFragment_to_lampDetailFragment"
+            app:destination="@id/lampDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/hueFragment"
-        android:name="com.example.philipshueapk.ui.HueFragment"
-        android:label="fragment_hue"
-        tools:layout="@layout/fragment_hue" >
+        android:id="@+id/lampDetailFragment"
+        android:name="com.example.philipshueapk.ui.LampDetailFragment"
+        android:label="LampDetailFragment" >
         <action
-            android:id="@+id/action_hueFragment_to_mainFragment"
+            android:id="@+id/action_lampDetailFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
 </navigation>
