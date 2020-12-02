@@ -13,9 +13,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import com.example.philipshueapk.HttpHandler;
 import com.example.philipshueapk.R;
+import com.example.philipshueapk.lamp.LampProduct;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import top.defaults.colorpicker.ColorObserver;
 import top.defaults.colorpicker.ColorPickerView;
@@ -28,6 +35,9 @@ import top.defaults.colorpicker.ColorPickerView;
 public class LampDetailFragment extends Fragment {
 
     private final String TAG = LampDetailFragment.class.getCanonicalName();
+    private int id = 0;
+    private LampProduct lamp;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -79,9 +89,29 @@ public class LampDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Bundle b = getArguments();
-        String lampName = b.getString("name");
+        id = b.getInt("id");
+        LampProduct lamp = (LampProduct) b.getSerializable("lamp");
+        ToggleButton toggleButton = getView().findViewById(R.id.detail_togglebutton);
+        toggleButton.setChecked(lamp.getState().getOn());
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                lamp.getState().setOn(b);
+                ObjectMapper mapper = new ObjectMapper();
+                ObjectNode node = mapper.createObjectNode();
+                node.put("on",b);
+                try {
+                    String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node);
+                    HttpHandler.INSTANCE.setLampState(id,json);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         TextView nameView = getView().findViewById(R.id.lamp_detail_name);
-        nameView.setText(lampName);
+        nameView.setText(lamp.getName());
+
+
 
 
         ColorPickerView colorPickerView = getView().findViewById(R.id.colorPickerView);
