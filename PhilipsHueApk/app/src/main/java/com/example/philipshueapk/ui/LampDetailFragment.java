@@ -125,7 +125,7 @@ public class LampDetailFragment extends Fragment {
             arrayNode.add(xyz[0]);
             arrayNode.add(xyz[2]);
             node.put("xy", arrayNode);
-            node.put("sat", xyz[1]);
+            node.put("bri", xyz[1]);
 
             try {
                 String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node);
