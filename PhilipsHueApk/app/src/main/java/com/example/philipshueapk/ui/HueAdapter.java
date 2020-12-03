@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
     private Context context;
     private OnItemClickListener onItemClickListener;
 
+    private static String TAG = HueAdapter.class.getCanonicalName();
 
     public interface OnItemClickListener{
         void OnItemClick(int position);
@@ -51,10 +53,12 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
     public void onBindViewHolder(@NonNull HueViewHolder holder, int position) {
         holder.textView.setText(this.lights.get(position).getName());
 
+        LampProduct lamp = lights.get(position);
+
         int height = holder.itemView.getHeight();
         ShapeDrawable drawable = new ShapeDrawable(new RectShape());
         drawable.getPaint().setShader(new LinearGradient(0, 0, 0, height,
-                Color.parseColor("#330000FF"),
+                Color.parseColor("#89BBFE"),
                 Color.parseColor("#89BBFE"),
                 Shader.TileMode.REPEAT));
 

@@ -106,4 +106,7 @@ public class MainFragment extends Fragment implements HueAdapter.OnItemClickList
         Log.d(TAG,"on lamps changed callback received");
         this.lights = lamps;
     }
+
+
+
 }

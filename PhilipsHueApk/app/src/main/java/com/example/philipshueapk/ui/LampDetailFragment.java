@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -22,6 +23,7 @@ import com.example.philipshueapk.R;
 import com.example.philipshueapk.lamp.LampProduct;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import top.defaults.colorpicker.ColorObserver;
@@ -82,6 +84,7 @@ public class LampDetailFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_lamp_detail, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -97,10 +100,10 @@ public class LampDetailFragment extends Fragment {
                 lamp.getState().setOn(b);
                 ObjectMapper mapper = new ObjectMapper();
                 ObjectNode node = mapper.createObjectNode();
-                node.put("on",b);
+                node.put("on", b);
                 try {
                     String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node);
-                    HttpHandler.INSTANCE.setLampState(id,json);
+                    HttpHandler.INSTANCE.setLampState(id, json);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
@@ -110,27 +113,58 @@ public class LampDetailFragment extends Fragment {
         nameView.setText(lamp.getName());
 
         ColorPickerView colorPickerView = getView().findViewById(R.id.colorPickerView);
-        colorPickerView.subscribe((color,fromUser,propagate) -> {
+        colorPickerView.subscribe((color, fromUser, propagate) -> {
 
             String hexColor = String.format("#%06X", (0xFFFFFF & color));
             Log.d(TAG, "Color: " + ", was: " + color);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                Log.d(TAG, "Color changed! " + hexColor);
 
+            float[] xyz = rgbToXyz(color);
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode node = mapper.createObjectNode();
+            ArrayNode arrayNode = mapper.createArrayNode();
+            arrayNode.add(xyz[0]);
+            arrayNode.add(xyz[2]);
+            node.put("xy", arrayNode);
+            node.put("sat", xyz[1]);
+
+            try {
+                String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node);
+                HttpHandler.INSTANCE.setLampState(id, json);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
             }
+
+
         });
     }
 
     /**
+     * Calculates CIE XYZ color space to CIE RGB color space.
      *
-     * @param colorStr e.g. "#FFFFFF"
-     * @return
+     * @param xyz values
+     * @return RGB value
      */
-    public static Color hex2Rgb(String colorStr) {
-        int r = Integer.valueOf(colorStr.substring( 1, 3 ), 16);
-        int g = Integer.valueOf(colorStr.substring( 3, 5 ), 16);
-        int b = Integer.valueOf( colorStr.substring( 5, 7 ), 16 );
-        return null;
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static int xyzToRgb(float[] xyz) {
+        ColorSpace colorSpace = ColorSpace.get(ColorSpace.Named.SRGB);
+
+        float[] result = colorSpace.fromXyz(xyz[0], xyz[1], xyz[2]);
+        return Color.rgb(result[0], result[1], result[2]);
+    }
+
+    /**
+     * Calculates CIE RGB color space to CIE XYZ color space.
+     *
+     * @param colorInt RGB value
+     * @return CIE XYZ value
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static float[] rgbToXyz(int colorInt) {
+        Color color = Color.valueOf(colorInt);
+        // X = Hue x, Y = Hue saturation, Z = Hue y
+
+        ColorSpace colorSpace = ColorSpace.get(ColorSpace.Named.SRGB);
+        return colorSpace.toXyz(color.red(), color.green(), color.blue());
     }
 
 
