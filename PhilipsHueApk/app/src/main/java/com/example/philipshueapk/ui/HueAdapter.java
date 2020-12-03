@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 //TODO: Change dunnydata back to LampProduct
 public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
-    private ArrayList<DunnyData> lights;
+    private ArrayList<LampProduct> lights;
     private Context context;
     private OnItemClickListener onItemClickListener;
 
@@ -27,7 +27,7 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
         void OnItemClick(int position);
     }
 
-    public HueAdapter(Context context, ArrayList<DunnyData> lights, OnItemClickListener onItemClickListener){
+    public HueAdapter(Context context, ArrayList<LampProduct> lights, OnItemClickListener onItemClickListener){
         this.context = context;
         this.lights = lights;
         this.onItemClickListener = onItemClickListener;
@@ -41,7 +41,7 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull HueViewHolder holder, int position) {
-        holder.textView.setText(this.lights.get(position).getText());
+        holder.textView.setText(this.lights.get(position).getName());
     }
 
     @Override

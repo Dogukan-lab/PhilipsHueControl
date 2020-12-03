@@ -1,5 +1,7 @@
 package com.example.philipshueapk.lamp;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -72,6 +74,16 @@ public class HueInfo {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
+
+    @JsonIgnore
+    public ArrayList<LampProduct> getLamps() {
+        ArrayList<LampProduct> lamps = new ArrayList<>();
+        lamps.add(product);
+        lamps.add(product2);
+        lamps.add(product3);
+        return lamps;
+    }
+
 
 }
 

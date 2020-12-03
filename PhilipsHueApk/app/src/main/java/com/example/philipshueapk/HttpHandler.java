@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import okhttp3.MediaType;
@@ -29,6 +30,9 @@ public enum HttpHandler {
     private String category = "/lights";
     private HueInfo hueInfo;
     private String[] lampNames = new String[3];
+    private ArrayList<LampsChangedListener> lampsChangedListeners = new ArrayList<>();
+
+
 
     /**
      * initializes this singleton and requests all the lights from the bridge
@@ -71,6 +75,7 @@ public enum HttpHandler {
                 String responseString = response.body().string();
                 Log.d(TAG, "GOT RESPONSE FROM EMULATOR: " + responseString);
                 hueInfos[0] = new ObjectMapper().readValue(responseString, HueInfo.class);
+                notifyLampsChangedListeners();
             }catch (IOException e) {
                 Log.d(TAG,"Exception while handling response: " + e.getMessage());
                 hueInfos[0] = new HueInfo();
@@ -102,6 +107,7 @@ public enum HttpHandler {
         Thread t = new Thread(() -> {
             try (Response response = client.newCall(request).execute()) {
                 Log.d(TAG, "GOT RESPONSE FROM EMULATOR: " + response.body().string());
+                notifyLampsChangedListeners();
             }catch (IOException e) {
                 Log.d(TAG,"Exception while handling response: " + e.getMessage());
             }
@@ -179,6 +185,17 @@ public enum HttpHandler {
         sendPutRequest(uri,requestBody);
     }
 
+    private void notifyLampsChangedListeners() {
+        Log.d(TAG,"Notifying all lamp changed listeners");
+        for (LampsChangedListener lampChangedListener : this.lampsChangedListeners) {
+            lampChangedListener.onLampsChanged(hueInfo.getLamps());
+        }
+    }
+
+    public ArrayList<LampProduct> getLamps() {
+        return hueInfo.getLamps();
+    }
+
     public OkHttpClient getClient() {
         return client;
     }
@@ -201,5 +218,9 @@ public enum HttpHandler {
 
     public String[] getLampNames() {
         return lampNames;
+    }
+
+    public void addLampsChangedListener(LampsChangedListener lampsChangedListener) {
+        this.lampsChangedListeners.add(lampsChangedListener);
     }
 }

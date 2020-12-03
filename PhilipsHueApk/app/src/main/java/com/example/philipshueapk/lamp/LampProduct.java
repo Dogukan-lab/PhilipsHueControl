@@ -1,5 +1,6 @@
 package com.example.philipshueapk.lamp;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -28,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /*
  * Holds an actual lamp, this class is used to retrieve and change individual lamp settings
  */
-public class LampProduct {
+public class LampProduct implements Serializable {
 
 
     @JsonProperty("state")

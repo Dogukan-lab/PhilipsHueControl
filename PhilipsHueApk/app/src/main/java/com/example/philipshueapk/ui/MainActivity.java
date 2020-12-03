@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.example.philipshueapk.DataSaver;
 import com.example.philipshueapk.HttpHandler;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        getSupportActionBar().hide(); //hide the title bar
         HttpHandler.INSTANCE.init();
 
         // load the user specified lamp names
@@ -56,11 +57,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void next(View v) {
+        Navigation.findNavController(v).navigate(R.id.action_mainFragment_to_lampDetailFragment);
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
         Log.d(TAG,"saving lamp names");
-        // save the user specified lamp names
+        // save the user specified lamp names when the app gets closed or the user changes to another app
         DataSaver.saveLampNames(this);
     }
 }
