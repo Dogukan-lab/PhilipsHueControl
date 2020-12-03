@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().hide(); //hide the title bar
         HttpHandler.INSTANCE.init();
 
         // load the user specified lamp names
