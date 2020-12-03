@@ -1,5 +1,10 @@
 package com.example.philipshueapk.lamp;
 
+import android.graphics.Color;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -169,6 +174,18 @@ public class LampState {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @JsonIgnore
+    public int calculateRGBColor() {
+        return Color.HSVToColor(new float[]{
+                (float) ((hue / 65535.0) * 360.0),
+                (float) (sat / 255.0),
+                (float) (bri / 254.0)});
+
+
     }
 
 }

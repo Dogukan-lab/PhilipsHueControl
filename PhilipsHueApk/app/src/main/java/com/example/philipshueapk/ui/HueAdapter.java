@@ -56,11 +56,7 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
         holder.textView.setText(this.lights.get(position).getName());
 
         LampProduct lamp = lights.get(position);
-        int color = Color.HSVToColor(new float[]{lamp.getState().getHue().floatValue(),lamp.getState().getSat().floatValue(),lamp.getState().getBri().floatValue()});
-        Log.d(TAG,"color: " + color);
-        int height = holder.itemView.getHeight();
-        ShapeDrawable drawable = new ShapeDrawable(new RectShape());
-        holder.itemView.setBackgroundColor(color);
+        holder.itemView.setBackgroundColor(lamp.getState().calculateRGBColor());
 
 
     }
@@ -90,17 +86,4 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
         }
     }
 
-    /**
-     * Calculates CIE XYZ color space to CIE RGB color space.
-     *
-     * @param xyz values
-     * @return RGB value
-     */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static int xyzToRgb(float[] xyz) {
-        ColorSpace colorSpace = ColorSpace.get(ColorSpace.Named.SRGB);
-
-        float[] result = colorSpace.fromXyz(xyz[0], xyz[1], xyz[2]);
-        return Color.rgb(result[0], result[1], result[2]);
-    }
 }
