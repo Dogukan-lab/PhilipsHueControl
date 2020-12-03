@@ -7,10 +7,17 @@
     tools:context=".ui.MainFragment"
     android:background="@drawable/colour_gradient">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/refreshLayout"
+        >
+
     <!-- This fragment will show all of the lamps that are currently connected to the hue bridge -->
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/mainRecycler"/>
 
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

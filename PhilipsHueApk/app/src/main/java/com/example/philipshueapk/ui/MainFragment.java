@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -84,10 +85,21 @@ public class MainFragment extends Fragment implements HueAdapter.OnItemClickList
         this.lampRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         this.lampRecycler.setHasFixedSize(true);
 
+
+
         this.lights = HttpHandler.INSTANCE.getLamps();
 
         HueAdapter hueAdapter = new HueAdapter(getContext(), this.lights, this);
         this.lampRecycler.setAdapter(hueAdapter);
+        // hacky
+        HueAdapter.OnItemClickListener listener = this;
+        SwipeRefreshLayout swipeRefreshLayout = this.rootView.findViewById(R.id.refreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            HttpHandler.INSTANCE.getAllLights();
+            lampRecycler.setAdapter(new HueAdapter(getContext(),HttpHandler.INSTANCE.getLamps(),listener));
+            this.lampRecycler.getAdapter().notifyDataSetChanged();
+        });
         return this.rootView;
     }
 

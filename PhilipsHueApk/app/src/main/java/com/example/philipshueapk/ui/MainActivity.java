@@ -37,28 +37,9 @@ public class MainActivity extends AppCompatActivity {
         // load the user specified lamp names
         DataSaver.loadLampNames(this);
 
-        // use without navcontroller: https://stackoverflow.com/questions/53902494/navigation-component-cannot-find-navcontroller
-        // can also be done in onclick  Navigation.findNavController(view).navigate(action);
-
-        /* putting something in an action to a destination:
-            Bundle bundle = new Bundle();
-            bundle.putString("amount", amount);
-            Navigation.findNavController(view).navigate(R.id.confirmationAction, bundle);
-
-            and then retrieving it:
-            TextView tv = view.findViewById(R.id.textViewAmount);
-            tv.setText(getArguments().getString("amount"));
-         */
-//        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-//        NavController navController = navHostFragment.getNavController();
-
-
-
     }
 
-    public void next(View v) {
-        Navigation.findNavController(v).navigate(R.id.action_mainFragment_to_lampDetailFragment);
-    }
+
 
     @Override
     protected void onPause() {
