@@ -116,10 +116,26 @@ public class LampDetailFragment extends Fragment {
 
         ColorPickerView colorPickerView = getView().findViewById(R.id.colorPickerView);
         colorPickerView.subscribe((color,fromUser,propagate) -> {
+
             String hexColor = String.format("#%06X", (0xFFFFFF & color));
+            Log.d(TAG, "Color: " + ", was: " + color);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 //Log.d(TAG, "Color changed! " + Color.convert(color, ColorSpace.MAX_ID));
             }
         });
     }
+
+    /**
+     *
+     * @param colorStr e.g. "#FFFFFF"
+     * @return
+     */
+    public static Color hex2Rgb(String colorStr) {
+        int r = Integer.valueOf(colorStr.substring( 1, 3 ), 16);
+        int g = Integer.valueOf(colorStr.substring( 3, 5 ), 16);
+        int b = Integer.valueOf( colorStr.substring( 5, 7 ), 16 );
+        return null;
+    }
+
+
 }
