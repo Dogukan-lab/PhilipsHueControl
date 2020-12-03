@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -22,6 +23,7 @@ import com.example.philipshueapk.R;
 import com.example.philipshueapk.lamp.LampProduct;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import top.defaults.colorpicker.ColorObserver;
@@ -82,6 +84,7 @@ public class LampDetailFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_lamp_detail, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -97,10 +100,10 @@ public class LampDetailFragment extends Fragment {
                 lamp.getState().setOn(b);
                 ObjectMapper mapper = new ObjectMapper();
                 ObjectNode node = mapper.createObjectNode();
-                node.put("on",b);
+                node.put("on", b);
                 try {
                     String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node);
-                    HttpHandler.INSTANCE.setLampState(id,json);
+                    HttpHandler.INSTANCE.setLampState(id, json);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
@@ -110,12 +113,42 @@ public class LampDetailFragment extends Fragment {
         nameView.setText(lamp.getName());
 
         ColorPickerView colorPickerView = getView().findViewById(R.id.colorPickerView);
-        colorPickerView.subscribe((color,fromUser,propagate) -> {
-            String hexColor = String.format("#%06X", (0xFFFFFF & color));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                Log.d(TAG, "Color changed! " + hexColor);
+        colorPickerView.subscribe((color, fromUser, propagate) -> {
 
+            String hexColor = String.format("#%06X", (0xFFFFFF & color));
+            Log.d(TAG, "Color: " + ", was: " + color);
+
+
+            Color color1 = Color.valueOf(color);
+            float[] hsb = calculateHSBColor((int) (color1.red()*255),(int) (color1.green()*255),(int) (color1.blue()*255));
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode node = mapper.createObjectNode();
+            node.put("hue", hsb[0]);
+            node.put("sat", hsb[1]);
+            node.put("bri", hsb[2]);
+
+
+            try {
+                String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node);
+                HttpHandler.INSTANCE.setLampState(id, json);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
             }
+
+
         });
     }
+
+    private float[] calculateHSBColor(int red, int green, int blue) {
+        float[] hsb = new float[3];
+        Color.RGBToHSV(red, green, blue, hsb);
+        Log.d(TAG, "rgb: " + red + ", " + green + ", " + blue);
+        hsb[0] = (Math.round((hsb[0] / 360) * 65535));
+        hsb[1] = (Math.round(hsb[1] * 255));
+        hsb[2] = (Math.round(hsb[2] * 254));
+
+        return hsb;
+    }
+
+
 }
