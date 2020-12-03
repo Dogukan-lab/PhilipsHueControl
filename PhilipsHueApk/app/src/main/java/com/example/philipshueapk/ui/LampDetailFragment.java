@@ -118,14 +118,15 @@ public class LampDetailFragment extends Fragment {
             String hexColor = String.format("#%06X", (0xFFFFFF & color));
             Log.d(TAG, "Color: " + ", was: " + color);
 
-            float[] xyz = rgbToXyz(color);
+
+            Color color1 = Color.valueOf(color);
+            float[] hsb = calculateHSBColor((int) (color1.red()*255),(int) (color1.green()*255),(int) (color1.blue()*255));
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode node = mapper.createObjectNode();
-            ArrayNode arrayNode = mapper.createArrayNode();
-            arrayNode.add(xyz[0]);
-            arrayNode.add(xyz[2]);
-            node.put("xy", arrayNode);
-            node.put("bri", xyz[1]);
+            node.put("hue", hsb[0]);
+            node.put("sat", hsb[1]);
+            node.put("bri", hsb[2]);
+
 
             try {
                 String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node);
@@ -138,33 +139,15 @@ public class LampDetailFragment extends Fragment {
         });
     }
 
-    /**
-     * Calculates CIE XYZ color space to CIE RGB color space.
-     *
-     * @param xyz values
-     * @return RGB value
-     */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static int xyzToRgb(float[] xyz) {
-        ColorSpace colorSpace = ColorSpace.get(ColorSpace.Named.SRGB);
+    private float[] calculateHSBColor(int red, int green, int blue) {
+        float[] hsb = new float[3];
+        Color.RGBToHSV(red, green, blue, hsb);
+        Log.d(TAG, "rgb: " + red + ", " + green + ", " + blue);
+        hsb[0] = (Math.round((hsb[0] / 360) * 65535));
+        hsb[1] = (Math.round(hsb[1] * 255));
+        hsb[2] = (Math.round(hsb[2] * 254));
 
-        float[] result = colorSpace.fromXyz(xyz[0], xyz[1], xyz[2]);
-        return Color.rgb(result[0], result[1], result[2]);
-    }
-
-    /**
-     * Calculates CIE RGB color space to CIE XYZ color space.
-     *
-     * @param colorInt RGB value
-     * @return CIE XYZ value
-     */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static float[] rgbToXyz(int colorInt) {
-        Color color = Color.valueOf(colorInt);
-        // X = Hue x, Y = Hue saturation, Z = Hue y
-
-        ColorSpace colorSpace = ColorSpace.get(ColorSpace.Named.SRGB);
-        return colorSpace.toXyz(color.red(), color.green(), color.blue());
+        return hsb;
     }
 
 

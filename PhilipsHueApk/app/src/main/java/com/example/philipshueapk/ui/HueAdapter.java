@@ -2,6 +2,7 @@ package com.example.philipshueapk.ui;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.ColorSpace;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
@@ -49,20 +50,19 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
     }
 
     //TODO: make the first color.parsecolor the value of the hue light
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull HueViewHolder holder, int position) {
         holder.textView.setText(this.lights.get(position).getName());
 
         LampProduct lamp = lights.get(position);
-
+        int color = Color.HSVToColor(new float[]{lamp.getState().getHue().floatValue(),lamp.getState().getSat().floatValue(),lamp.getState().getBri().floatValue()});
+        Log.d(TAG,"color: " + color);
         int height = holder.itemView.getHeight();
         ShapeDrawable drawable = new ShapeDrawable(new RectShape());
-        drawable.getPaint().setShader(new LinearGradient(0, 0, 0, height,
-                Color.parseColor("#89BBFE"),
-                Color.parseColor("#89BBFE"),
-                Shader.TileMode.REPEAT));
+        holder.itemView.setBackgroundColor(color);
 
-        holder.itemView.setBackground(drawable);
+
     }
 
     @Override
@@ -88,5 +88,19 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
         public void onClick(View v) {
             this.onItemClickListener.OnItemClick(getAdapterPosition());
         }
+    }
+
+    /**
+     * Calculates CIE XYZ color space to CIE RGB color space.
+     *
+     * @param xyz values
+     * @return RGB value
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static int xyzToRgb(float[] xyz) {
+        ColorSpace colorSpace = ColorSpace.get(ColorSpace.Named.SRGB);
+
+        float[] result = colorSpace.fromXyz(xyz[0], xyz[1], xyz[2]);
+        return Color.rgb(result[0], result[1], result[2]);
     }
 }

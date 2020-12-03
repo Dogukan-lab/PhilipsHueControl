@@ -16,14 +16,12 @@ public class LampStreamingTest {
 
     @Test
     public void testRenderer() {
-        streaming = new LampStreaming();
         streaming.setRenderer(true);
         assertTrue(streaming.getRenderer());
     }
 
     @Test
     public void testProxy() {
-        streaming = new LampStreaming();
         streaming.setProxy(true);
         assertTrue(streaming.getProxy());
     }
@@ -31,7 +29,6 @@ public class LampStreamingTest {
 
     @Test
     public void testAdditionalProperties() {
-        streaming = new LampStreaming();
         streaming.setAdditionalProperty("Test", 19);
         assertEquals(19, streaming.getAdditionalProperties().get("Test"));
     }
