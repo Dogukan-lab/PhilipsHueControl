@@ -73,8 +73,6 @@ public class LampDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -111,16 +109,14 @@ public class LampDetailFragment extends Fragment {
         TextView nameView = getView().findViewById(R.id.lamp_detail_name);
         nameView.setText(lamp.getName());
 
-
-
-
         ColorPickerView colorPickerView = getView().findViewById(R.id.colorPickerView);
         colorPickerView.subscribe((color,fromUser,propagate) -> {
 
             String hexColor = String.format("#%06X", (0xFFFFFF & color));
             Log.d(TAG, "Color: " + ", was: " + color);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                //Log.d(TAG, "Color changed! " + Color.convert(color, ColorSpace.MAX_ID));
+                Log.d(TAG, "Color changed! " + hexColor);
+
             }
         });
     }
