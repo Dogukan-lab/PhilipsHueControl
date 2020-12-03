@@ -3,7 +3,6 @@ package com.example.philipshueapk.ui;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,16 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.philipshueapk.DunnyData;
 import com.example.philipshueapk.HttpHandler;
 import com.example.philipshueapk.LampsChangedListener;
 import com.example.philipshueapk.R;
 import com.example.philipshueapk.lamp.LampProduct;
 
 import java.util.ArrayList;
-import java.util.Objects;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +38,7 @@ public class MainFragment extends Fragment implements HueAdapter.OnItemClickList
 
     private RecyclerView lampRecycler;
     private View rootView;
-    private ArrayList<LampProduct> lamps;
+    private ArrayList<LampProduct> lights;
 
     public MainFragment() {
         // Required empty public constructor
@@ -89,9 +84,9 @@ public class MainFragment extends Fragment implements HueAdapter.OnItemClickList
         this.lampRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         this.lampRecycler.setHasFixedSize(true);
 
-        lamps = HttpHandler.INSTANCE.getLamps();
+        this.lights = HttpHandler.INSTANCE.getLamps();
 
-        HueAdapter hueAdapter = new HueAdapter(getContext(), lamps, this);
+        HueAdapter hueAdapter = new HueAdapter(getContext(), this.lights, this);
         this.lampRecycler.setAdapter(hueAdapter);
         return this.rootView;
     }
@@ -101,7 +96,7 @@ public class MainFragment extends Fragment implements HueAdapter.OnItemClickList
 //        Navigation.findNavController(this.rootView);
         Bundle bundle = new Bundle();
         bundle.putInt("id",position+1);
-        bundle.putSerializable("lamp",lamps.get(position));
+        bundle.putSerializable("lamp", this.lights.get(position));
 
         Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_lampDetailFragment,bundle);
         Log.d(TAG, "OnItemClick: WEJOW ITEM CLICKED!!!! OP POSITIE: " + position);
@@ -110,6 +105,6 @@ public class MainFragment extends Fragment implements HueAdapter.OnItemClickList
     @Override
     public void onLampsChanged(ArrayList<LampProduct> lamps) {
         Log.d(TAG,"on lamps changed callback received");
-        this.lamps = lamps;
+        this.lights = lamps;
     }
 }
