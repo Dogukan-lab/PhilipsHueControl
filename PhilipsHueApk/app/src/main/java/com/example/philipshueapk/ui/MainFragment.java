@@ -99,6 +99,7 @@ public class MainFragment extends Fragment implements HueAdapter.OnItemClickList
             HttpHandler.INSTANCE.getAllLights();
             lampRecycler.setAdapter(new HueAdapter(getContext(),HttpHandler.INSTANCE.getLamps(),listener));
             this.lampRecycler.getAdapter().notifyDataSetChanged();
+            lampRecycler.scheduleLayoutAnimation();
         });
         return this.rootView;
     }
