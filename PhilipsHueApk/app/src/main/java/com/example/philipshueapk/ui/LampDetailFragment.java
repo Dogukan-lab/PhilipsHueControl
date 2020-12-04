@@ -22,12 +22,15 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.example.philipshueapk.HttpHandler;
+import com.example.philipshueapk.LampsChangedListener;
 import com.example.philipshueapk.R;
 import com.example.philipshueapk.lamp.LampProduct;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.util.ArrayList;
 
 import top.defaults.colorpicker.ColorObserver;
 import top.defaults.colorpicker.ColorPickerView;
@@ -114,7 +117,14 @@ public class LampDetailFragment extends Fragment {
         });
 
         EditText nameView = getView().findViewById(R.id.lamp_detail_name);
-        nameView.setText(lamp.getName());
+        String lname = HttpHandler.INSTANCE.getLampNames()[id-1];
+        if (lname == null) {
+            nameView.setText(lamp.getName());
+        } else {
+            nameView.setText(HttpHandler.INSTANCE.getLampNames()[id-1]);
+        }
+
+
 
         nameView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -137,8 +147,7 @@ public class LampDetailFragment extends Fragment {
         colorPickerView.setInitialColor(lamp.getState().calculateRGBColor());
 
         colorPickerView.subscribe((color, fromUser, propagate) -> {
-            String hexColor = String.format("#%06X", (0xFFFFFF & color));
-            Log.d(TAG, "Color: " + ", was: " + color);
+           //Log.d(TAG, "Color: " + ", was: " + color);
 
 
             Color color1 = Color.valueOf(color);
@@ -169,6 +178,5 @@ public class LampDetailFragment extends Fragment {
 
         return hsb;
     }
-
 
 }
