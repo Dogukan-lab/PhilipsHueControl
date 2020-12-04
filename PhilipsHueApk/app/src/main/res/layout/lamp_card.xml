@@ -20,7 +20,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/lamp"
+            android:background="@drawable/bulb"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,6 +32,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="24dp"
             android:textSize="18sp"
+            android:textColor="@color/black"
             android:text="LAMP NAME"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -46,6 +47,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="12dp"
             android:textSize="18sp"
+            android:textColor="@color/black"
             android:text="CURRENT COLOUR"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

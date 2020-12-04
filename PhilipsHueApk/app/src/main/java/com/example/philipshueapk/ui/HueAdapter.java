@@ -25,13 +25,13 @@ import com.example.philipshueapk.lamp.LampProduct;
 
 import java.util.ArrayList;
 
-//TODO: Change dunnydata back to LampProduct
+/**
+ * Adapter for the main fragment. This adapter adds a new light to the view based on the HTTP GET request.
+ */
 public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
     private ArrayList<LampProduct> lights;
     private Context context;
     private OnItemClickListener onItemClickListener;
-
-    private static String TAG = HueAdapter.class.getCanonicalName();
 
     public interface OnItemClickListener{
         void OnItemClick(int position);
@@ -41,7 +41,6 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
         this.context = context;
         this.lights = lights;
         this.onItemClickListener = onItemClickListener;
-
     }
 
     @NonNull
@@ -50,12 +49,10 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
         return new HueViewHolder(LayoutInflater.from(this.context).inflate(R.layout.lamp_card, parent, false), this.onItemClickListener);
     }
 
-    //TODO: make the first color.parsecolor the value of the hue light
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull HueViewHolder holder, int position) {
         holder.textView.setText(this.lights.get(position).getName());
-
 
         LampProduct lamp = lights.get(position);
         if (lamp.getState().getOn()) {

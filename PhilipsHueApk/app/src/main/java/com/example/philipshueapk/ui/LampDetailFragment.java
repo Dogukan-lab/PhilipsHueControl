@@ -34,46 +34,14 @@ import top.defaults.colorpicker.ColorPickerView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link LampDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class LampDetailFragment extends Fragment {
 
     private final String TAG = LampDetailFragment.class.getCanonicalName();
     private int id = 0;
-    private LampProduct lamp;
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public LampDetailFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HueFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LampDetailFragment newInstance(String param1, String param2) {
-        LampDetailFragment fragment = new LampDetailFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    public LampDetailFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,6 +81,8 @@ public class LampDetailFragment extends Fragment {
             }
         });
 
+        initDetailText(lamp);
+
         EditText nameView = getView().findViewById(R.id.lamp_detail_name);
         String lname = HttpHandler.INSTANCE.getLampNames()[id - 1];
         if (lname == null) {
@@ -123,28 +93,18 @@ public class LampDetailFragment extends Fragment {
 
         nameView.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
-            public void afterTextChanged(Editable s) {
-                HttpHandler.INSTANCE.renameLamp(id, nameView.getText().toString());
-            }
+            public void afterTextChanged(Editable s) { HttpHandler.INSTANCE.renameLamp(id, nameView.getText().toString()); }
         });
 
         ColorPickerView colorPickerView = getView().findViewById(R.id.colorPickerView);
-        colorPickerView.setInitialColor(colorPickerView.getColor());
-
         colorPickerView.subscribe((color, fromUser, propagate) -> {
-
-            String hexColor = String.format("#%06X", (0xFFFFFF & color));
             Log.d(TAG, "Color: " + ", was: " + color);
-
 
             Color color1 = Color.valueOf(color);
             float[] hsb = calculateHSBColor((int) (color1.red() * 255), (int) (color1.green() * 255), (int) (color1.blue() * 255));
@@ -157,10 +117,41 @@ public class LampDetailFragment extends Fragment {
             try {
                 String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node);
                 HttpHandler.INSTANCE.setLampState(id, json);
+
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    private void initDetailText(LampProduct lamp) {
+        TextView status = getView().findViewById(R.id.lamp_status);
+        TextView states = getView().findViewById(R.id.lamp_states);
+        TextView hue = getView().findViewById(R.id.lamp_hue);
+        TextView saturation = getView().findViewById(R.id.lamp_saturation);
+        TextView lampEffect = getView().findViewById(R.id.lamp_effect);
+        TextView lampColourMode = getView().findViewById(R.id.lamp_colormode);
+
+        if(lamp.getState().getOn()){
+            status.setText(R.string.lamp_status_on);
+        } else {
+            status.setText(R.string.lamp_status_off);
+        }
+        states.setText(R.string.state_state);
+        states.append(": " + lamp.getState().getReachable());
+
+
+        hue.setText(R.string.state_hue);
+        hue.append(": " + lamp.getState().getHue());
+
+        saturation.setText(R.string.state_saturation);
+        saturation.append(": " + lamp.getState().getSat());
+
+        lampEffect.setText(R.string.state_effect);
+        lampEffect.append(": " + lamp.getState().getEffect());
+
+        lampColourMode.setText(R.string.state_colormode);
+        lampColourMode.append(": " + lamp.getState().getColormode());
     }
 
     private float[] calculateHSBColor(int red, int green, int blue) {
@@ -173,6 +164,4 @@ public class LampDetailFragment extends Fragment {
 
         return hsb;
     }
-
-
 }

@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         // load the user specified lamp names
         DataSaver.loadLampNames(this);
-
     }
 
 

@@ -2,51 +2,112 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/colour_gradient">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/colour_gradient">
 
-    <!-- TODO: Have an alpha slider for the application -->
     <!-- TODO: Always have the lamp remember the colour from the hue circle! -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="720dp">
-
+        android:layout_height="match_parent">
 
         <EditText
             android:id="@+id/lamp_detail_name"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:text="LAMP NAME"
             android:inputType="text"
+            android:textColor="@color/white"
+            android:fontFamily="@font/rubik_bold"
             android:textSize="30sp"
+            android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.559"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:autofillHints="Lamp name"/>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="276dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="4dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.118"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lamp_detail_name">
+
+            <TextView
+                android:id="@+id/lamp_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="text1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/lamp_states"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_bold"
+                android:text="text1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/lamp_hue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="text1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/lamp_saturation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="text1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/lamp_effect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="text1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/lamp_colormode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="text1"
+                android:textSize="20sp" />
+        </LinearLayout>
 
         <top.defaults.colorpicker.ColorPickerView
             android:id="@+id/colorPickerView"
-            android:layout_width="418dp"
-            android:layout_height="437dp"
-            android:layout_marginTop="72dp"
+            android:layout_width="396dp"
+            android:layout_height="422dp"
+            android:layout_marginTop="9dp"
             app:enableBrightness="true"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.482"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lamp_detail_name" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <ToggleButton
             android:id="@+id/detail_togglebutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="124dp"
             android:text="ToggleButton"
             app:layout_constraintBottom_toTopOf="@+id/colorPickerView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
