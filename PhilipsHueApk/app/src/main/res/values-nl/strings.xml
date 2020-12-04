@@ -3,4 +3,13 @@
     <string name="app_name">PhilipsHueApk</string>
     <string name="lamp_status_on">Status: Aan</string>
     <string name="lamp_status_off">Status: Uit</string>
+    <string name="state_state">Status</string>
+    <string name="state_hue">Tint</string>
+    <string name="state_saturation">Verzadiging</string>
+    <string name="state_brightness">Helderheid</string>
+    <string name="state_effect">Effect</string>
+    <string name="state_colormode">Kleurenmodus</string>
+    <string name="state_mode">Modus</string>
+    <string name="product_type">Type</string>
+    <string name="product_manufacturer_name">Naam fabriek</string>
 </resources>

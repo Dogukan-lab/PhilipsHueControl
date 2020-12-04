@@ -2,5 +2,14 @@
     <string name="app_name">PhilipsHueApk</string>
     <string name="lamp_status_on">Status: on</string>
     <string name="lamp_status_off">Status: off</string>
+    <string name="state_state">State</string>
+    <string name="state_hue">Hue</string>
+    <string name="state_saturation">Saturation</string>
+    <string name="state_brightness">Brightness</string>
+    <string name="state_effect">Effect</string>
+    <string name="state_colormode">Color mode</string>
+    <string name="state_mode">Mode</string>
+    <string name="product_type">Type</string>
+    <string name="product_manufacturer_name">Manufactorer name</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
