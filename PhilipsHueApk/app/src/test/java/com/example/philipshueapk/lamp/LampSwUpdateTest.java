@@ -30,6 +30,7 @@ public class LampSwUpdateTest {
 
     @Test
     public void getAdditionalProperties() {
-
+        lampSwUpdate.setAdditionalProperty("Test", 19);
+        assertEquals(19, lampSwUpdate.getAdditionalProperties().get("Test"));
     }
 }
