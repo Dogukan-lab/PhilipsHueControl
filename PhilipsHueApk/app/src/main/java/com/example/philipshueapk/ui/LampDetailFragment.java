@@ -10,11 +10,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -109,10 +112,34 @@ public class LampDetailFragment extends Fragment {
                 }
             }
         });
-        TextView nameView = getView().findViewById(R.id.lamp_detail_name);
-        nameView.setText(lamp.getName());
+
+        EditText nameView = getView().findViewById(R.id.lamp_detail_name);
+        String lname = HttpHandler.INSTANCE.getLampNames()[id - 1];
+        if (lname == null) {
+            nameView.setText(lamp.getName());
+        } else {
+            nameView.setText(HttpHandler.INSTANCE.getLampNames()[id - 1]);
+        }
+
+        nameView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                HttpHandler.INSTANCE.renameLamp(id, nameView.getText().toString());
+            }
+        });
 
         ColorPickerView colorPickerView = getView().findViewById(R.id.colorPickerView);
+        colorPickerView.setInitialColor(colorPickerView.getColor());
+
         colorPickerView.subscribe((color, fromUser, propagate) -> {
 
             String hexColor = String.format("#%06X", (0xFFFFFF & color));
@@ -120,13 +147,12 @@ public class LampDetailFragment extends Fragment {
 
 
             Color color1 = Color.valueOf(color);
-            float[] hsb = calculateHSBColor((int) (color1.red()*255),(int) (color1.green()*255),(int) (color1.blue()*255));
+            float[] hsb = calculateHSBColor((int) (color1.red() * 255), (int) (color1.green() * 255), (int) (color1.blue() * 255));
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode node = mapper.createObjectNode();
             node.put("hue", hsb[0]);
             node.put("sat", hsb[1]);
             node.put("bri", hsb[2]);
-
 
             try {
                 String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node);
@@ -134,8 +160,6 @@ public class LampDetailFragment extends Fragment {
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-
-
         });
     }
 
