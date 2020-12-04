@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PhilipsHueApk</string>
+    <string name="lamp_status_on">Status: Aan</string>
+    <string name="lamp_status_off">Status: Uit</string>
+</resources>

@@ -56,8 +56,13 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
     public void onBindViewHolder(@NonNull HueViewHolder holder, int position) {
         holder.textView.setText(this.lights.get(position).getName());
 
+
         LampProduct lamp = lights.get(position);
-        Log.d(TAG, "Setting card color!!!!!!!!!!! " + lamp.getState().calculateRGBColor());
+        if (lamp.getState().getOn()) {
+            holder.statusTextView.setText(R.string.lamp_status_on);
+        } else {
+            holder.statusTextView.setText(R.string.lamp_status_off);
+        }
         holder.itemView.setBackgroundColor(lamp.getState().calculateRGBColor());
     }
 
@@ -69,12 +74,14 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
     public static class HueViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public ImageView imageView;
         public TextView textView;
+        public TextView statusTextView;
         private OnItemClickListener onItemClickListener;
 
         public HueViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             this.imageView = itemView.findViewById(R.id.lamp_image);
             this.textView = itemView.findViewById(R.id.lamp_name);
+            this.statusTextView = itemView.findViewById(R.id.lamp_state);
             this.onItemClickListener = onItemClickListener;
 
             itemView.setOnClickListener(this);
