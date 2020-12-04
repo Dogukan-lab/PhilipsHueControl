@@ -1,7 +1,5 @@
 package com.example.philipshueapk;
 
-import android.util.Log;
-
 import com.example.philipshueapk.lamp.HueInfo;
 import com.example.philipshueapk.lamp.LampProduct;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,7 +30,6 @@ public enum HttpHandler {
     private ArrayList<LampsChangedListener> lampsChangedListeners = new ArrayList<>();
 
 
-
     /**
      * initializes this singleton and requests all the lights from the bridge
      */
@@ -50,6 +47,7 @@ public enum HttpHandler {
 
     /**
      * returns the HueInfo instance that holds all lamp info of the current bridge
+     *
      * @return the HueInfo instance retrieved in the getAllLights method
      */
     public HueInfo getHueInfo() {
@@ -67,16 +65,16 @@ public enum HttpHandler {
         Thread t = new Thread(() -> {
 
             HueInfo hueInfo;
-            if (canLog()) Log.d(TAG, "Starting new thread");
+            Log.d(TAG, "Starting new thread");
             Request request = new Request.Builder().url(uri).build();
 
             try (Response response = client.newCall(request).execute()) {
                 String responseString = response.body().string();
-                if (canLog()) Log.d(TAG, "GOT RESPONSE FROM EMULATOR: " + responseString);
+                Log.d(TAG, "GOT RESPONSE FROM EMULATOR: " + responseString);
                 hueInfos[0] = new ObjectMapper().readValue(responseString, HueInfo.class);
                 notifyLampsChangedListeners();
-            }catch (IOException e) {
-                if (canLog()) Log.d(TAG,"Exception while handling response: " + e.getMessage());
+            } catch (IOException e) {
+                Log.d(TAG, "Exception while handling response: " + e.getMessage());
                 hueInfos[0] = new HueInfo();
             }
 
@@ -94,7 +92,8 @@ public enum HttpHandler {
 
     /**
      * sends a put request to the bridge, to change the state of a lamp
-     * @param uri the uri to send to the api
+     *
+     * @param uri         the uri to send to the api
      * @param requestBody the requestbody to send. This holds what needs to be changed
      */
     public void sendPutRequest(String uri, RequestBody requestBody) {
@@ -105,10 +104,10 @@ public enum HttpHandler {
 
         Thread t = new Thread(() -> {
             try (Response response = client.newCall(request).execute()) {
-                if (canLog()) Log.d(TAG, "GOT RESPONSE FROM EMULATOR: " + response.body().string());
+                Log.d(TAG, "GOT RESPONSE FROM EMULATOR: " + response.body().string());
                 notifyLampsChangedListeners();
-            }catch (IOException e) {
-                if (canLog()) Log.d(TAG,"Exception while handling response: " + e.getMessage());
+            } catch (IOException e) {
+                Log.d(TAG, "Exception while handling response: " + e.getMessage());
             }
         });
         t.start();
@@ -124,14 +123,14 @@ public enum HttpHandler {
         final String uri = bridgeUri + username + "/lights/" + id;
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode objectNode = mapper.createObjectNode();
-        objectNode.put("name",newName);
+        objectNode.put("name", newName);
 
         try {
             String jsonBody = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectNode);
-            RequestBody requestBody = RequestBody.create(jsonBody,JSON);
-            if (canLog()) Log.d(TAG, "Sending rename request: " + jsonBody);
-            lampNames[id-1] = newName;
-            sendPutRequest(uri,requestBody);
+            RequestBody requestBody = RequestBody.create(jsonBody, JSON);
+            Log.d(TAG, "Sending rename request: " + jsonBody);
+            lampNames[id - 1] = newName;
+            sendPutRequest(uri, requestBody);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -139,12 +138,13 @@ public enum HttpHandler {
 
     /**
      * gets the lamp with the specific id
+     *
      * @param id the id of the lamp to get
      * @return a LampProduct instance with all the info of the lamp
      */
     public LampProduct getLamp(int id) {
         final String uri = bridgeUri + username + "/lights/" + id;
-        if (canLog()) Log.d(TAG, "SENDING GET LAMP REQUEST :" + uri);
+        Log.d(TAG, "SENDING GET LAMP REQUEST :" + uri);
         final LampProduct[] lampProducts = new LampProduct[1];
         Thread t = new Thread(() -> {
 
@@ -153,10 +153,10 @@ public enum HttpHandler {
 
             try (Response response = client.newCall(request).execute()) {
                 String responseString = response.body().string();
-                if (canLog()) Log.d(TAG, "GOT RESPONSE FROM EMULATOR: " + responseString);
+                Log.d(TAG, "GOT RESPONSE FROM EMULATOR: " + responseString);
                 lampProducts[0] = new ObjectMapper().readValue(responseString, LampProduct.class);
-            }catch (IOException e) {
-                if (canLog()) Log.d(TAG,"Exception while handling response: " + e.getMessage());
+            } catch (IOException e) {
+                Log.d(TAG, "Exception while handling response: " + e.getMessage());
                 lampProducts[0] = new LampProduct();
             }
 
@@ -173,19 +173,20 @@ public enum HttpHandler {
 
     /**
      * sets the state of the given lamp with the given json values using the {@link HttpHandler#sendPutRequest(String, RequestBody) sendPutRequest} method
-     * @param id the id of the lamp to set
+     *
+     * @param id       the id of the lamp to set
      * @param jsonBody the body of the request. This contains what values should be set
      */
     public void setLampState(int id, String jsonBody) {
         final String uri = bridgeUri + username + "/lights/" + id + "/state";
-        RequestBody requestBody = RequestBody.create(jsonBody,JSON);
-        if (canLog()) Log.d(TAG, "Sending state request for lamp " + id + "\nBody:\n" + jsonBody);
+        RequestBody requestBody = RequestBody.create(jsonBody, JSON);
+        Log.d(TAG, "Sending state request for lamp " + id + "\nBody:\n" + jsonBody);
 
-        sendPutRequest(uri,requestBody);
+        sendPutRequest(uri, requestBody);
     }
 
     private void notifyLampsChangedListeners() {
-        if (canLog()) Log.d(TAG,"Notifying all lamp changed listeners");
+        Log.d(TAG, "Notifying all lamp changed listeners");
         for (LampsChangedListener lampChangedListener : this.lampsChangedListeners) {
             lampChangedListener.onLampsChanged(hueInfo.getLamps());
         }
@@ -233,6 +234,7 @@ public enum HttpHandler {
 
     /**
      * method that checks if the method being called is in a test instance or not. This is used to see if we can use logs or not
+     *
      * @return true if the method is being called from a test, false otherwise
      */
     public static boolean canLog() {

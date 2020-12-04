@@ -32,5 +32,12 @@ public class DataSaver {
         }
     }
 
+    public static void clear(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
+
 
 }
