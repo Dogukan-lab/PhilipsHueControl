@@ -60,7 +60,7 @@ public enum HttpHandler {
     /**
      * gets all lights from the bridge
      */
-    private void getAllLights() {
+    public void getAllLights() {
         final String uri = bridgeUri + username + category;
         Log.d(TAG, "SENDING ALL LIGHTS REQUEST :" + uri);
         // kinda a workaround, create a final array with size 1, so we can store the received hue info outside the thread

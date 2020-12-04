@@ -41,6 +41,7 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
         this.context = context;
         this.lights = lights;
         this.onItemClickListener = onItemClickListener;
+
     }
 
     @NonNull
@@ -56,9 +57,8 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
         holder.textView.setText(this.lights.get(position).getName());
 
         LampProduct lamp = lights.get(position);
+        Log.d(TAG, "Setting card color!!!!!!!!!!! " + lamp.getState().calculateRGBColor());
         holder.itemView.setBackgroundColor(lamp.getState().calculateRGBColor());
-
-
     }
 
     @Override
