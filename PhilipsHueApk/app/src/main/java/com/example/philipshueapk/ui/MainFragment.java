@@ -23,6 +23,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
+ * The main fragmant also shows all of the lights connected to the hue bridge.
  */
 public class MainFragment extends Fragment implements HueAdapter.OnItemClickListener, LampsChangedListener {
 
@@ -40,6 +41,12 @@ public class MainFragment extends Fragment implements HueAdapter.OnItemClickList
         Log.d(TAG, "onCreate main fragment");
     }
 
+    /**
+     * This method creates the recycler view in which the lights will be displayed.
+     * @param inflater is the inflater for the view, this case this fragment.
+     * @param container a container for all of the fragments.
+     * @returns a view that has the recyclerview as well as the fragment layout.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,6 +73,10 @@ public class MainFragment extends Fragment implements HueAdapter.OnItemClickList
         return this.rootView;
     }
 
+    /**
+     * When a card inside of the recycler view has been clicked, then it collects the data for that card/light.
+     * @param position the current position inside of the list of lights.
+     */
     @Override
     public void OnItemClick(int position) {
         Bundle bundle = new Bundle();
@@ -76,6 +87,10 @@ public class MainFragment extends Fragment implements HueAdapter.OnItemClickList
         Log.d(TAG, "OnItemClick: WEJOW ITEM CLICKED!!!! OP POSITIE: " + position);
     }
 
+    /**
+     * This callbacks
+     * @param lamps
+     */
     @Override
     public void onLampsChanged(ArrayList<LampProduct> lamps) {
         Log.d(TAG,"on lamps changed callback received");

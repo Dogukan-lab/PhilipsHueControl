@@ -33,6 +33,9 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
     private Context context;
     private OnItemClickListener onItemClickListener;
 
+    /**
+     * Interface to transfer the data of the clicked item inside of a recyclerview correctly.
+     */
     public interface OnItemClickListener{
         void OnItemClick(int position);
     }
@@ -49,6 +52,11 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
         return new HueViewHolder(LayoutInflater.from(this.context).inflate(R.layout.lamp_card, parent, false), this.onItemClickListener);
     }
 
+    /**
+     * This method creates the card for a light.
+     * @param holder the viewholder that will be modified
+     * @param position current position of the list of lights.
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull HueViewHolder holder, int position) {
@@ -68,6 +76,9 @@ public class HueAdapter extends RecyclerView.Adapter<HueAdapter.HueViewHolder> {
         return this.lights.size();
     }
 
+    /**
+     * The viewholder for a light. In this case in form of a card.
+     */
     public static class HueViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public ImageView imageView;
         public TextView textView;

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -35,6 +36,7 @@ import top.defaults.colorpicker.ColorPickerView;
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
+ * This is the detail fragment of one light.
  */
 public class LampDetailFragment extends Fragment {
 
@@ -60,9 +62,9 @@ public class LampDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Bundle b = getArguments();
-        id = b.getInt("id");
-        LampProduct lamp = (LampProduct) b.getSerializable("lamp");
+        Bundle bundle = getArguments();
+        id = bundle.getInt("id");
+        LampProduct lamp = (LampProduct) bundle.getSerializable("lamp");
         ToggleButton toggleButton = getView().findViewById(R.id.detail_togglebutton);
         toggleButton.setChecked(lamp.getState().getOn());
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -124,6 +126,10 @@ public class LampDetailFragment extends Fragment {
         });
     }
 
+    /**
+     * Initialises all of the lamp details inside of the detail fragment
+     * @param lamp the current light, of which the data will be retrieved.
+     */
     private void initDetailText(LampProduct lamp) {
         TextView status = getView().findViewById(R.id.lamp_status);
         TextView states = getView().findViewById(R.id.lamp_states);
@@ -154,6 +160,13 @@ public class LampDetailFragment extends Fragment {
         lampColourMode.append(": " + lamp.getState().getColormode());
     }
 
+    /**
+     * This method is used to change the rgb values of the colour picker, into a hsb colour to send to the emulator/api.
+     * @param red the red value of the colour, this turns into
+     * @param green the green value of the colour
+     * @param blue the blue value of the colour
+     * @returns a hsb colour to send to the hue bridge api
+     */
     private float[] calculateHSBColor(int red, int green, int blue) {
         float[] hsb = new float[3];
         Color.RGBToHSV(red, green, blue, hsb);

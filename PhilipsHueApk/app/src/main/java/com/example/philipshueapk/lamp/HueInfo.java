@@ -83,7 +83,5 @@ public class HueInfo {
         lamps.add(product3);
         return lamps;
     }
-
-
 }
 

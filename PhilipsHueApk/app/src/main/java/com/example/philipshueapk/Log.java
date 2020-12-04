@@ -1,5 +1,8 @@
 package com.example.philipshueapk;
 
+/**
+ * This class is a mock of the internal Log class.
+ */
 public class Log {
     public static int d(String tag, String msg) {
         System.out.println("DEBUG: " + tag + ": " + msg);
