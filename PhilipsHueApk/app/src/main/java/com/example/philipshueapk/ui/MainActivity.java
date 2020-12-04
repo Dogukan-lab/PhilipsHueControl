@@ -12,8 +12,11 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.philipshueapk.DataSaver;
 import com.example.philipshueapk.HttpHandler;

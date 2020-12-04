@@ -7,45 +7,58 @@
     <!-- TODO: Have an alpha slider for the application -->
     <!-- TODO: Always have the lamp remember the colour from the hue circle! -->
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="720dp">
+        android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/lamp_detail_name"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:text="LAMP NAME"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.559"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <EditText
+                android:id="@+id/lamp_detail_name"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="LAMP NAME"
+                android:textSize="30sp"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.559"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:gravity="center"/>
 
-        <top.defaults.colorpicker.ColorPickerView
-            android:id="@+id/colorPickerView"
-            android:layout_width="418dp"
-            android:layout_height="437dp"
-            android:layout_marginTop="72dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lamp_detail_name" />
+            <top.defaults.colorpicker.ColorPickerView
+                android:id="@+id/colorPickerView"
+                android:layout_width="418dp"
+                android:layout_height="437dp"
+                android:layout_marginTop="72dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lamp_detail_name" />
 
-        <ToggleButton
-            android:id="@+id/detail_togglebutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="10dp"
-            android:text="ToggleButton"
-            app:layout_constraintBottom_toTopOf="@+id/colorPickerView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            <ToggleButton
+                android:id="@+id/detail_togglebutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="10dp"
+                android:text="ToggleButton"
+                app:layout_constraintBottom_toTopOf="@+id/colorPickerView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="HALLO WERELD"
+                android:textSize="40sp"
+                app:layout_constraintTop_toBottomOf="@+id/colorPickerView"
+                tools:layout_editor_absoluteX="52dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>

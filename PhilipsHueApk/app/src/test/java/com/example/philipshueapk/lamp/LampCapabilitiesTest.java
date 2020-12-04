@@ -23,7 +23,12 @@ public class LampCapabilitiesTest {
 
     @Test
     public void getControl() {
-        // todo test
+        LampControl control = new LampControl();
+        control.setMaxlumen(3000);
+        lampCapabilities.setControl(control);
+
+        assertNotNull(lampCapabilities.getControl());
+        assertEquals(3000, lampCapabilities.getControl().getMaxlumen().intValue());
     }
 
     @Test

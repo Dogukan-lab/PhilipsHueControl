@@ -10,11 +10,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -109,12 +112,31 @@ public class LampDetailFragment extends Fragment {
                 }
             }
         });
-        TextView nameView = getView().findViewById(R.id.lamp_detail_name);
+
+        EditText nameView = getView().findViewById(R.id.lamp_detail_name);
         nameView.setText(lamp.getName());
 
-        ColorPickerView colorPickerView = getView().findViewById(R.id.colorPickerView);
-        colorPickerView.subscribe((color, fromUser, propagate) -> {
+        nameView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                HttpHandler.INSTANCE.renameLamp(id, nameView.getText().toString());
+            }
+        });
+
+        ColorPickerView colorPickerView = getView().findViewById(R.id.colorPickerView);
+        Log.d(TAG, "Current colour is: " + Color.valueOf(lamp.getState().calculateRGBColor()).toString());
+        colorPickerView.setInitialColor(lamp.getState().calculateRGBColor());
+
+        colorPickerView.subscribe((color, fromUser, propagate) -> {
             String hexColor = String.format("#%06X", (0xFFFFFF & color));
             Log.d(TAG, "Color: " + ", was: " + color);
 
@@ -134,8 +156,6 @@ public class LampDetailFragment extends Fragment {
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-
-
         });
     }
 
