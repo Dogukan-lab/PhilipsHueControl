@@ -1,5 +1,8 @@
 package com.example.philipshueapk;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.example.philipshueapk.lamp.HueInfo;
 import com.example.philipshueapk.lamp.LampProduct;
 
@@ -7,6 +10,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 
@@ -143,7 +148,7 @@ class MockTest {
 
     }
 
-    @DisplayName("integration test to see if the lamp module is working correct with the httphandler")
+    @DisplayName("integration test to see if the lamp module is working correctly with the httphandler")
     @Test
     void testIntegrationLampsInHttpHandler() {
         // get the response from the server
@@ -166,7 +171,20 @@ class MockTest {
         assertEquals("Hue Lamp 2",hueInfo.getProduct2().getName());
         assertEquals("Hue Lamp 3",hueInfo.getProduct3().getName());
 
+    }
 
+    @Test
+    void testLampNames() {
+        // get the response from the server
+        HttpUrl baseUrl = mockWebServer.url("/api/newdeveloper/lights");
+        HttpHandler httpHandler = HttpHandler.INSTANCE;
+        httpHandler.setBridgeUri(baseUrl.toString());
+        httpHandler.init();
 
+        mockWebServer.enqueue(new MockResponse().setResponseCode(200).setBody("[{\"success\":{\"/lights/1/name\":\"Bedroom Light\"}}]"));
+        httpHandler.renameLamp(1,"Bedroom Light");
+
+        assertNotNull(httpHandler.getLampNames());
+        assertEquals("Bedroom Light",httpHandler.getLampNames()[0]);
     }
 }
